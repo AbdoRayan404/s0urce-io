@@ -188,11 +188,20 @@
   "http://s0urce.io/client/img/word/m/51": "gridwidth",
   "http://s0urce.io/client/img/word/e/39": "log",
   "http://s0urce.io/client/img/word/m/63": "server",
-  "http://s0urce.io/client/img/word/m/52": "getpass"
+  "http://s0urce.io/client/img/word/m/52": "getpass",
+  "http://s0urce.io/client/img/word/e/32": "host",
+  "http://s0urce.io/client/img/word/e/14": "loop",
+  "http://s0urce.io/client/img/word/e/42": "file"
 }
     var current = "";
+    var runtimeSettings = {
+        port: "1"
+    }
+    var settings = {
+        hackingMessage: "Yup. power of Automation"
+    }
 
-    function StartHack(){
+    function StartGUI(){
         let windowHTML = (`<div class="window" style="border-color: rgb(0,0,0); color: rgb(191, 207, 210); height: 320px; width: 480px; z-index: 10; top: 11.5%; right: 40px">`+
                               '<div id="custom-gui-bot-title" class="window-title"> </div>'+
                               `<div class="window-content" style="height: 320px; width: 480px; ">`+
@@ -201,6 +210,9 @@
                                   '</div>'+
                                   '<div id="cracking-status" style="display: block; margin-bottom: 15px">'+
                                       'Cracking: False'+
+                                  '</div>'+
+                                  '<div id="cracking-status" style="display: block; margin-bottom: 15px">'+
+                                      `Hacking message: ${settings.hackingMessage}`+
                                   '</div>'+
                               '</div>'+
                          '</div>')
@@ -219,8 +231,8 @@
     function LookForVictim(){
         document.querySelectorAll('.window-content div[class=window-list-table-wrapper]:not(:first-child) table tr')[0].click();
         setTimeout(()=> document.querySelector('#window-other-button').click(), 250);
-        setTimeout(()=> document.querySelector('#window-other-attackbutton-wrapper div:not(:first-child)').click(), 250);
-
+        setTimeout(()=> document.querySelector(`#window-other-attackbutton-wrapper #window-other-port${runtimeSettings.port}`).click(), 250);
+        
         if(!document.querySelector('#tool-type-form > button')){
             let submitButton = document.createElement('button');
             submitButton.type = 'submit'
@@ -230,6 +242,11 @@
 
 
     setInterval(function Crack(){
+        if(document.querySelector('#topwindow-success').style.display != 'none'){
+            document.querySelector('#targetmessage-input').value = settings.hackingMessage
+            document.querySelector('#targetmessage-button-send').click()
+            return;
+        }
         if(document.querySelector('#window-tool').style.display == 'none') {
             document.querySelector('#cracking-status').innerText = 'CDM: Closed'
             return;
@@ -267,7 +284,7 @@
 
     window.onload = ()=>{
         document.querySelector('#tool-type-word').addEventListener('change', Learn)
-        document.querySelector('#login-play').addEventListener('click', setTimeout(StartHack, 2000));
+        document.querySelector('#login-play').addEventListener('click', setTimeout(StartGUI, 2000));
     }
 
     window.wordsMap = UrlWordsMap;
