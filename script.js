@@ -232,7 +232,9 @@
         document.querySelectorAll('.window-content div[class=window-list-table-wrapper]:not(:first-child) table tr')[0].click();
         setTimeout(()=> document.querySelector('#window-other-button').click(), 250);
         setTimeout(()=> document.querySelector(`#window-other-attackbutton-wrapper #window-other-port${runtimeSettings.port}`).click(), 250);
-        
+        if(runtimeSettings.port == 3) runtimeSettings.port = 1
+        else runtimeSettings.port++
+
         if(!document.querySelector('#tool-type-form > button')){
             let submitButton = document.createElement('button');
             submitButton.type = 'submit'
@@ -250,6 +252,16 @@
         if(document.querySelector('#window-tool').style.display == 'none') {
             document.querySelector('#cracking-status').innerText = 'CDM: Closed'
             return;
+        }
+        if(document.querySelectorAll('#cdm-text-container > span').length != 0){
+            if(document.querySelectorAll('#cdm-text-container > span')[document.querySelectorAll('#cdm-text-container > span').length - 1].innerText === 'This port has been closed. Try another'){
+                if(runtimeSettings.port == 3) runtimeSettings.port = 1
+                else runtimeSettings.port++
+
+                document.querySelector('#window-tool > div:nth-child(3) > span:nth-child(2)').click()
+                document.querySelector('#cracking-status').innerText = 'CDM: Closed'
+                return;
+            }
         }
         if(document.querySelector('#progressbar-firewall-amount').style.width == "100%") {
             document.querySelector('#window-tool > div:nth-child(3) > span:nth-child(2)').click()
