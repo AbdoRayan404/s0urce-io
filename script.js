@@ -191,11 +191,13 @@
   "http://s0urce.io/client/img/word/m/52": "getpass",
   "http://s0urce.io/client/img/word/e/32": "host",
   "http://s0urce.io/client/img/word/e/14": "loop",
-  "http://s0urce.io/client/img/word/e/42": "file"
+  "http://s0urce.io/client/img/word/e/42": "file",
+  "http://s0urce.io/client/img/word/e/21": "status"
 }
     var current = "";
     var runtimeSettings = {
-        port: "1"
+        port: "1",
+        autoHack: false
     }
     var settings = {
         hackingMessage: "Yup. power of Automation"
@@ -205,6 +207,9 @@
         let windowHTML = (`<div class="window" style="border-color: rgb(0,0,0); color: rgb(191, 207, 210); height: 320px; width: 480px; z-index: 10; top: 11.5%; right: 40px">`+
                               '<div id="custom-gui-bot-title" class="window-title"> </div>'+
                               `<div class="window-content" style="height: 320px; width: 480px; ">`+
+                                  '<div id="auto-hack" class="button" style="display: block; margin-bottom: 15px; color: red">'+
+                                      'Auto Hack'+
+                                  '</div>'+
                                   '<div id="start-hack" class="button" style="display: block; margin-bottom: 15px">'+
                                       'Hack Top player'+
                                   '</div>'+
@@ -219,6 +224,7 @@
         $('html body div#game-page div.window-wrapper').append(windowHTML)
 
         document.querySelector('#start-hack').addEventListener('click', LookForVictim);
+        document.querySelector('#auto-hack').addEventListener('click', ()=>{runtimeSettings.autoHack === true ? runtimeSettings.autoHack = false : runtimeSettings.autoHack = true})
         console.warn('Automation ;D Started');
     }
 
@@ -293,6 +299,18 @@
 
     }, 750)
 
+    setInterval(function AutoHack(){
+        if(runtimeSettings.autoHack === false){
+            console.log('')
+            document.querySelector('#auto-hack').style.color = 'red';
+            return;
+        }
+        document.querySelector('#auto-hack').style.color = 'green';
+        if(document.querySelector('#window-tool').style.display != 'none') return
+
+        LookForVictim();
+
+    }, 750)
 
     window.onload = ()=>{
         document.querySelector('#tool-type-word').addEventListener('change', Learn)
